@@ -23,7 +23,6 @@ setup(
         'Source Code': 'https://github.com/DeepLearnPhysics/larcv3'
     },
     install_requires=[
-        'numpy',
         'scikit-build',
     ],
 )
