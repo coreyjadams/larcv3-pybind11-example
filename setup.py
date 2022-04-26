@@ -4,16 +4,22 @@ import argparse
 import io
 import os
 
+# Select the python used to call this script as the one we force cmake to use:
+import sys
 
+v = sys.version_info
 
+py_version = ".".join([str(v.major), str(v.minor), str(v.micro)])
+print(py_version)
 
 setup(
-    name="pybind11-test-symbols",
+    name="larcv",
     version="1.0.0",
     cmake_source_dir='src/',
     cmake_args=[
         '-DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.9',
         '-DCMAKE_PYTHON_BINDINGS=True',
+        f'-DCMAKE_PYVERSION={py_version}'
     ],
     include_package_data=True,
     author=['Corey Adams',],
@@ -25,4 +31,5 @@ setup(
     install_requires=[
         'scikit-build',
     ],
+    packages=['larcv','src/pybind11'],
 )

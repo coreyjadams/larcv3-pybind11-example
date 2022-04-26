@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -g")
-
+set(VERBOSE True)
 
 
 
@@ -20,9 +20,6 @@ set(PROJECT_SOURCE_DIR "./")
 include_directories("./")
 
 
-# Many packages need python:
-find_package(PythonLibs REQUIRED)
-include_directories(${PYTHON_INCLUDE_DIRS})
 
 if(OPENMP)
   find_package(OpenMP)
@@ -36,13 +33,14 @@ endif()
 # macro(generate_python_bindings name)
 
 
-
 # endmacro(generate_python_bindings)
 if(CMAKE_PYTHON_BINDINGS)
+  # Many packages need python:
+  find_package(Python ${CMAKE_PYVERSION} EXACT REQUIRED COMPONENTS  Interpreter Development)
+  include_directories(${Python_INCLUDE_DIRS})
   message("Adding pybind11")
   add_subdirectory(pybind11)
   include_directories(${PYBIND11_INCLUDE_DIR})
-  message(${PYBIND11_INCLUDE_DIR})
 else()
   add_definitions(-DLARCV_NO_PYBIND)
 endif(CMAKE_PYTHON_BINDINGS)

@@ -7,8 +7,13 @@ add_library(larcv3 SHARED
     $<TARGET_OBJECTS:base>
     )
 
+message(${Python_LIBRARIES})
+message(${Python_EXECUTABLE})
+message(${Python_LIBRARY_DIRS})
+message(${Python_RUNTIME_LIBRARY_DIRS})
+
 # Link against python:
-target_link_libraries(larcv3 ${PYTHON_LIBRARIES})
+target_link_libraries(larcv3 ${Python_LIBRARIES})
 
 ###############################
 
@@ -22,7 +27,7 @@ if(CMAKE_PYTHON_BINDINGS)
     # If building with setuptools, CMake will not be performing the install
     set_target_properties(pylarcv PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
 
-    target_link_libraries(pylarcv PRIVATE larcv3)
+    target_link_libraries(pylarcv PRIVATE larcv3 ${Python_LIBRARIES})
 
     if(UNIX AND NOT APPLE)
         set_target_properties(pylarcv PROPERTIES INSTALL_RPATH "$ORIGIN/lib/")
@@ -31,6 +36,7 @@ if(CMAKE_PYTHON_BINDINGS)
     endif()
 
     set_target_properties(pylarcv PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 
 endif(CMAKE_PYTHON_BINDINGS)
 
